@@ -26,8 +26,8 @@ const fakeResponse = (response): Promise<any> =>
 export const getTodosRequest = () =>
   fakeResponse(todoArray);
 
-export const addTodoRequest = () => {
-  todoArray.push({ id: '_' + Math.random(), name: 'Todo: ' + name.findName() });
+export const addTodoRequest = (newTodo) => {
+  todoArray.push(newTodo);
   return fakeResponse(todoArray);
 };
 
