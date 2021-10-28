@@ -24,10 +24,10 @@ const fakeResponse = (response): Promise<any> =>
   });
 
 export const getTodosRequest = () =>
-  fakeResponse(todoArray);
+  fakeResponse([...todoArray]);
 
 export const addTodoRequest = (newTodo) => {
-  todoArray.push(newTodo);
-  return fakeResponse(todoArray);
+  const newTodoList = [...todoArray].push(newTodo);
+  return fakeResponse(newTodoList);
 };
 

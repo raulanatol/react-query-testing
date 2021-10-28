@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 export const Header: FC = () => {
-  const { isLoading, data: todos = [] } = useQuery<any[]>('todos', getTodosRequest);
+  const { isLoading, data: todos = [] } = useQuery<any[]>('todo_list', getTodosRequest);
   console.log('Header', isLoading);
 
   if (isLoading) {
