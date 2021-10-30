@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
-import { useMutation, useQuery } from 'react-query';
 import { RotateCirclesLoader } from 'react-inline-loaders';
-import { getTodoRequest, updateTodoRequest } from '../api/todos.api';
+import { useTodoAPI } from '../hooks/useTodoAPI';
 
 interface TodoItemProps {
   id: string;
 }
 
 export const TodoItem: FC<TodoItemProps> = ({ id }) => {
-  const { data: todo, isLoading } = useQuery<any>(['todo', id], getTodoRequest(id));
-  const { mutate } = useMutation(['todo', id], updateTodoRequest(id));
+  const { todo, dataIsLoading, updateTodo, isUpdating } = useTodoAPI(id);
+  // const { data: todo, isLoading } = useQuery<any>(['todo', id], getTodoRequest(id));
+  // const { mutate } = useMutation(['todo', id], updateTodoRequest(id));
 
-  if (isLoading) {
+  if (dataIsLoading) {
     return <RotateCirclesLoader/>;
   }
 
@@ -20,7 +20,9 @@ export const TodoItem: FC<TodoItemProps> = ({ id }) => {
   }
 
   const handleUpdateItem = () =>
-    mutate({ done: true });
+    updateTodo({ done: true });
+
+  console.log('>>', isUpdating);
 
   return <div>
     <p>Id: {todo._id}</p>
