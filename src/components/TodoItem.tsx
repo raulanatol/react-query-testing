@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { RotateCirclesLoader } from 'react-inline-loaders';
-import { useTodoAPI } from '../hooks/useTodoAPI';
+import { useTodoAPI } from '../hooks/api/todos/useTodoAPI';
 
 interface TodoItemProps {
   id: string;

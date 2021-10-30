@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { RotateCirclesLoader } from 'react-inline-loaders';
 import styled from '@emotion/styled';
-import { useTodosAPI } from '../hooks/useTodosAPI';
+import { useTodosAPI } from '../hooks/api/todos/useTodosAPI';
 
 const Button = styled.div`
   cursor: pointer;
