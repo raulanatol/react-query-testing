@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
-import { useMutation, useQuery } from 'react-query';
-import { getTodosRequest, removeTodoRequest } from '../api/todos.api';
 import { RotateCirclesLoader } from 'react-inline-loaders';
 import styled from '@emotion/styled';
+import { useTodosAPI } from '../hooks/useTodosAPI';
 
 const Button = styled.div`
   cursor: pointer;
@@ -25,17 +24,16 @@ interface TodoListProps {
 }
 
 export const TodoList: FC<TodoListProps> = ({ onClickTodo }) => {
-  const { isLoading, data: todos } = useQuery<any[]>('todos', getTodosRequest);
-  const { mutate } = useMutation('todos', removeTodoRequest);
+  const { todos, isLoading, removeOne, updateOne } = useTodosAPI();
 
   const handleRemove = (id: string) => () =>
-    mutate(id);
+    removeOne(id);
 
   const handleOpen = (id: string) => () =>
     onClickTodo(id);
 
-  // const handleUpdate = (id: string) => () =>
-  //   mutateUpdate({ id: id, done: true });
+  const handleUpdate = (id: string) => () =>
+    updateOne(id);
 
   return <div>
     <ol>
@@ -47,7 +45,7 @@ export const TodoList: FC<TodoListProps> = ({ onClickTodo }) => {
             {todo.name}
             ({todo.updates})
             <Button onClick={handleOpen(todo._id)}>[Open]</Button>
-            {/*<Button onClick={handleUpdate(todo._id)}>[Update]</Button>*/}
+            <Button onClick={handleUpdate(todo._id)}>[Update]</Button>
           </Base>
         </li>
       )}
