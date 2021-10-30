@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getTodosRequest } from '../api/todos.api';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { TodoList } from '../components/TodoList';
 import styled from '@emotion/styled';
-import { Debugger } from '../components/Debugger';
+import { TodoItem } from '../components/TodoItem';
 
 const Container = styled.div`
   display: flex;
@@ -17,17 +17,23 @@ const LeftColumn = styled.div`
 `;
 
 export const TodosPage: FC = () => {
+  const [todoSelectedId, setTodoSelectedId] = useState<string | undefined>();
+
   const { isLoading } = useQuery<any[]>('todos', getTodosRequest);
   console.log('TodosPage', isLoading);
+
+  const handleOnClickTodo = id =>
+    setTodoSelectedId(id);
+
+  const handleOnClickShowList = () =>
+    setTodoSelectedId(undefined);
 
   return <Container>
     <LeftColumn>
       <Header/>
-      <TodoList/>
-      <Footer/>
+      {!todoSelectedId && <TodoList onClickTodo={handleOnClickTodo}/>}
+      {todoSelectedId && <TodoItem id={todoSelectedId}/>}
+      <Footer onClickShowList={handleOnClickShowList}/>
     </LeftColumn>
-    <div>
-      <Debugger/>
-    </div>
   </Container>;
 };

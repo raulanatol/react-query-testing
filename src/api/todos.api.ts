@@ -1,33 +1,26 @@
-import { name } from 'faker';
+const API_URL = 'http://localhost:3030/todos';
 
-export const todoArray = [
-  { id: '1', name: name.findName() },
-  { id: '2', name: name.findName() }
-];
-
-const getRandom = (min = 1000, max = 3000) =>
-  Math.floor(Math.random() * (max - min)) + min;
-
-const getUnexpectedError = (errorThreshold = 1200) =>
-  getRandom() < errorThreshold;
-
-const fakeResponse = (response): Promise<any> =>
-  new Promise((resolve, reject) => {
-    const error = getUnexpectedError();
-    if (error) {
-      reject('Unexpected error');
-      return;
-    }
-    setTimeout(() => {
-      resolve(response);
-    }, getRandom());
-  });
+const toJSON = response => response.json();
 
 export const getTodosRequest = () =>
-  fakeResponse(todoArray);
+  fetch(API_URL)
+    .then(toJSON);
 
-export const addTodoRequest = (newTodo) => {
-  todoArray.push(newTodo);
-  return fakeResponse(todoArray);
+export const addTodoRequest = (_) =>
+  fetch(API_URL, { method: 'POST' })
+    .then(toJSON);
+
+export const removeTodoRequest = (id: string) =>
+  fetch(API_URL + '/' + id, { method: 'DELETE' })
+    .then(toJSON);
+
+export const updateTodoRequest = (id: string) => (data: any) => {
+  console.log('DATA', data);
+  return fetch(API_URL + '/' + id, { method: 'PATCH' })
+    .then(toJSON);
 };
 
+export const getTodoRequest = (id: string) =>
+  () =>
+    fetch(API_URL + '/' + id)
+      .then(toJSON);

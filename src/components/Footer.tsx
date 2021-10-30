@@ -3,7 +3,11 @@ import { name } from 'faker';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addTodoRequest, getTodosRequest } from '../api/todos.api';
 
-export const Footer: FC = () => {
+interface FooterProps {
+  onClickShowList: () => void;
+}
+
+export const Footer: FC<FooterProps> = ({ onClickShowList }) => {
   const queryClient = useQueryClient();
   const mutation = useMutation(addTodoRequest, {
     onMutate: async (newTodo) => {
@@ -37,7 +41,10 @@ export const Footer: FC = () => {
     mutation.mutate({ id: '_' + Math.random(), name: 'Todo: ' + name.findName() });
   };
 
+  const handleShowList = () => onClickShowList();
+
   return <div>
     <button onClick={handleAddElement}>Add {isLoading ? '*' : `${todos.length}`}</button>
+    <button onClick={handleShowList}>Show list</button>
   </div>;
 };
